@@ -101,7 +101,7 @@ def add_bid(request, listing_id):
             form.instance.item = listing
 
             # Check if bid is higher than current bid / starting bid
-            if form.instance.amount > listing.current_price():
+            if form.instance.amount >= listing.current_price() + listing.price_step:
                 
                 # Saves what is stored in the ModelForm to database
                 form.save()
@@ -117,7 +117,7 @@ def add_bid(request, listing_id):
             else: 
                 
                 # If bid is lower than current bid, add an error message and reload the page
-                messages.error(request, 'Your bid needs to be higher than the current bid.')
+                messages.error(request, 'Your step needs to be higher than the step bid.')
                 
                 return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 

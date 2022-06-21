@@ -19,11 +19,13 @@ class Listing(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
+    price_step = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     image = models.URLField(max_length=1000, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, default='', blank=True, null=True)
     active = models.BooleanField(default=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listings")
     created_at = models.DateTimeField(auto_now_add=True)
+    end_at = models.DateTimeField(auto_now_add=False, blank=True, null=True)
     watched_by = models.ManyToManyField(User, blank=True, related_name="watchlist")
     
     def __str__(self):
@@ -59,6 +61,8 @@ class Listing(models.Model):
 class Bid(models.Model):
     item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="bids")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bids")
+    created_at = models.DateTimeField(auto_now_add=True)
+
     amount = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):

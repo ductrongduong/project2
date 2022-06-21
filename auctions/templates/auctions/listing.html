@@ -1,5 +1,7 @@
 {% extends "auctions/layout.html" %}
 {% load humanize %}
+{% load tz %}
+
 
 {% block title %}{{ listing.title }} {% endblock %}
 
@@ -47,7 +49,10 @@
             <p class="text-monospace text-muted border-bottom pb-3">
                 <small>Created by {{listing.author}} {{ listing.created_at|naturaltime }}</small>
             </p>
-            
+        
+            <p class="text-monospace text-muted border-bottom pb-3">
+                <small>End at: {{ listing.created_at|localtime }}</small>
+            </p>
             <!-- Bid section -->
             <div class="text-center my-4">
                 <!-- Starting price: <strong>£{{listing.starting_bid}}</strong><br> -->
@@ -55,7 +60,7 @@
                 <h5 class="pt-2">
                     <!-- Starting price: <strong>£{{listing.starting_bid}}</strong><br> -->
                     <p>Starting price: <strong>£{{listing.starting_bid}}</strong></p>
-                
+                    <p>Step price: <strong>£{{listing.price_step}}</strong></p>
                     {% if listing.active %}Current price:{% else %}Winning bid:{% endif %} <strong>£{{listing.current_price}}</strong>
                 </h5>
                 

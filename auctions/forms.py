@@ -6,13 +6,15 @@ from .models import Category, Bid, Comment, Listing
 class NewListingForm(forms.ModelForm):
     class Meta:
         model = Listing
-        fields = ['title', 'description', 'starting_bid', 'image', 'category']
+        fields = ['title', 'description', 'starting_bid','price_step', 'image', 'category', 'end_at']
         widgets = {
                     'title': forms.TextInput(attrs={'class': 'form-control'}),
                     'description': forms.Textarea(attrs={'rows':2, 'maxlength': 1000, 'class': 'form-control'}),
                     'starting_bid': forms.NumberInput(attrs={'class': 'form-control'}),
+                    'price_step' : forms.NumberInput(attrs={'class': 'form-control'}),
                     'image': forms.URLInput(attrs={'class': 'form-control'}),
-                    'category': forms.Select(attrs={'class': 'form-control'})
+                    'category': forms.Select(attrs={'class': 'form-control'}),
+                    'end_at': forms.DateTimeInput(attrs={'type': 'datetime-local'})
                     }
         labels = {
             'image': 'Image URL'
