@@ -6,6 +6,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django import forms
 from django.contrib import messages #imports messages
+import humanize
+import datetime
 
 from .models import User, Listing, Category, Notification
 from.forms import BidForm, CommentForm, NewListingForm
@@ -59,7 +61,27 @@ def newlisting(request):
         "form": form
     })
 
+
+def check_auction_end(listing_id):
+    listing = Listing.objects.get(pk=listing_id)
+    # print(humanize.naturaltime(deployed_at))
+    # print(listing.end_at)
+    # print(datetime.datetime.now())
+    time = listing.end_at.time()
+    date = listing.end_at.date()
+    x = datetime.datetime(date.year, date.month, date.day, time.hour + 7, time.minute, time.second)
+    # print(x)
+    # print(datetime.datetime.now())
+    # print(x > datetime.datetime.now())
+    if (x < datetime.datetime.now()):
+        Listing.objects.filter(pk=listing_id).update(active=False)
+
+    
+
 def listing(request, listing_id):
+
+
+    check_auction_end(listing_id)
 
     # Look up the relevant info from the db to load the page
     listing = Listing.objects.get(pk=listing_id)
@@ -72,6 +94,7 @@ def listing(request, listing_id):
     else: 
         is_in_watchlist = False
 
+
     return render(request, "auctions/listing.html", {
         "listing": listing,
         "form": BidForm(),
@@ -80,7 +103,8 @@ def listing(request, listing_id):
         "comments": comments,
         "total_comments": total_comments,
         "is_in_watchlist": is_in_watchlist,
-        "user": request.user
+        "user": request.user,
+        # "localtime" : time.localtime()
     })
 
 @login_required(login_url='login')

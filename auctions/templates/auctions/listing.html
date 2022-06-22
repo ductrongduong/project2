@@ -51,7 +51,8 @@
             </p>
         
             <p class="text-monospace text-muted border-bottom pb-3">
-                <small>End at: {{ listing.created_at|localtime }}</small>
+                
+                <small>End at: {{ listing.end_at|naturaltime }}</small>
             </p>
             <!-- Bid section -->
             <div class="text-center my-4">
