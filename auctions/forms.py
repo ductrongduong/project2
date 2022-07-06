@@ -2,6 +2,7 @@ from django import forms
 
 from .models import Category, Bid, Comment, Listing
 
+
 # Model form for a new listing
 class NewListingForm(forms.ModelForm):
     class Meta:
@@ -13,6 +14,8 @@ class NewListingForm(forms.ModelForm):
                     'starting_bid': forms.NumberInput(attrs={'class': 'form-control'}),
                     'price_step' : forms.NumberInput(attrs={'class': 'form-control'}),
                     'image': forms.URLInput(attrs={'class': 'form-control'}),
+                    # 'photo' : forms.(attrs={'class': 'form-control'}),
+                    # 'photo' : forms.ImageField(label='Company Logo',required=False, widget=forms.FileInput),
                     'category': forms.Select(attrs={'class': 'form-control'}),
                     'end_at': forms.DateTimeInput(attrs={'type': 'datetime-local'})
                     }

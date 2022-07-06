@@ -21,6 +21,7 @@ class Listing(models.Model):
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
     price_step = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     image = models.URLField(max_length=1000, blank=True, null=True)
+    photo = models.ImageField(null=True, blank=False)
     category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, default='', blank=True, null=True)
     active = models.BooleanField(default=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listings")

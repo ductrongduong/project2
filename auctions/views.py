@@ -41,19 +41,29 @@ def newlisting(request):
 
         # Take in the data the user submitted and save it as form
         form = NewListingForm(request.POST)
-        print(form)
+        images = request.FILES.getlist('images')
+        print(images)
 
         # Check if form data is valid (server-side)
         if form.is_valid():
+
             # Sets author field in new listing
             form.instance.author = request.user
+            
             # Saves new listing
             new_listing = form.save()
+            if (len(images) > 0):
+                new_listing.photo = images[0]
+                new_listing.save()
             #add author to watchlist 
             request.user.watchlist.add(new_listing)
             # Redirect to listing page 
             return HttpResponseRedirect(reverse("listing", args=(new_listing.pk,)))
+
+        print("Invalid Form")
+        
     else: 
+
         # If a GET (or any other method), we'll create a blank form
         form = NewListingForm()
 
@@ -85,6 +95,7 @@ def listing(request, listing_id):
 
     # Look up the relevant info from the db to load the page
     listing = Listing.objects.get(pk=listing_id)
+    # print("helllllllllllllllllllo")
     comments = listing.comments.all()
     total_comments = comments.count()
     
