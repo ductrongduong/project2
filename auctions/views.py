@@ -14,10 +14,16 @@ from.forms import BidForm, CommentForm, NewListingForm
 
 # Homepage
 def index(request):
+    activeListings = Listing.objects.filter(active=True)
 
-    print(Listing.objects.filter(active=True))
+    if request.method == "POST":
+        # Attempt to sign user in
+        search = request.POST["search"]
+        activeListings = Listing.objects.filter(active=True, title__icontains=search)
+
+
     return render(request, "auctions/index.html", {
-        "listings": Listing.objects.filter(active=True),
+        "listings": activeListings,
     })
 
 # Page that shows lists of categories available on the website
@@ -42,7 +48,6 @@ def newlisting(request):
         # Take in the data the user submitted and save it as form
         form = NewListingForm(request.POST)
         images = request.FILES.getlist('images')
-        print(images)
 
         # Check if form data is valid (server-side)
         if form.is_valid():

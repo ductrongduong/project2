@@ -4,6 +4,13 @@
 {% block title %} Active Listings {% endblock %}
 
 {% block body %}
+   <div class=" d-flex justify-content-center pt-5 mx-5 px-5">
+        <form class="example d-flex form-group w-75 mx-5 " action="{% url 'index' %}" method = "POST">
+            {% csrf_token %}
+            <input type="text" class="form-control w-100 rounded-0" placeholder="Search.." name="search">
+            <button type="submit" class="px-5 w-25  btn btn-primary rounded-0  rounded-right "><i class="fa fa-search"></i></button>
+        </form>
+    </div>
     <h2 class="text-center title">Active Listings</h2>
     <div class="container d-flex flex-wrap justify-content-center">
         
